@@ -1,5 +1,7 @@
 @extends('layouts.driver')
 
+
+@section('title', 'Profile')
 @section('content')
     <!-- Content -->
 
@@ -7,7 +9,7 @@
 
 
         <h4 class="py-3 breadcrumb-wrapper mb-4">
-            <span class="text-muted fw-light">User Profile /</span> Profile
+            Dashboard
         </h4>
 
 
@@ -20,30 +22,26 @@
                     </div>
                     <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
                         <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
-                            <img src="{{ asset('/assetss/img/avatars/download.jpg') }}" alt="user image"
+                            <img src="data:image/png;base64,{{ chunk_split(base64_encode($driver->photo->driversphoto) ) }}" alt="user image"
                                 class="d-block h-auto ms-0 ms-sm-4 rounded-3 user-profile-img">
                         </div>
                         <div class="flex-grow-1 mt-3 mt-sm-5">
                             <div
                                 class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-4 flex-md-row flex-column gap-4">
                                 <div class="user-profile-info">
-                                    <h4>lukewilliams</h4>
+                                    <h4>{{ $driver->firstname }} {{ $driver->lastname }}</h4>
                                     <ul
                                         class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
                                         <li class="list-inline-item fw-semibold">
                                             <i class='bx bx-pen'></i> Driver
                                         </li>
+                                       
                                         <li class="list-inline-item fw-semibold">
-                                            <i class='bx bx-map'></i> Vatican City
-                                        </li>
-                                        <li class="list-inline-item fw-semibold">
-                                            <i class='bx bx-calendar-alt'></i> Joined April 2021
+                                            <i class='bx bx-calendar-alt'></i> Joined on {{ $driver->signupdate->toFormattedDateString() }}
                                         </li>
                                     </ul>
                                 </div>
-                                <a href="javascript:void(0)" class="btn btn-primary text-nowrap">
-                                    <i class='bx bx-user-check'></i> Connected
-                                </a>
+                              
                             </div>
                         </div>
                     </div>
@@ -56,8 +54,8 @@
         <div class="row">
             <div class="col-md-12">
                 <ul class="nav nav-pills flex-column flex-sm-row mb-4">
-                    <li class="nav-item"><a class="nav-link active" href="javascript:void(0);"><i class='bx bx-user'></i>
-                            Profile</a></li>
+                    {{-- <li class="nav-item"><a class="nav-link active" href="javascript:void(0);"><i class='bx bx-user'></i>
+                            Profile</a></li> --}}
                     {{--   <li class="nav-item"><a class="nav-link" href="pages-profile-teams.html"><i class='bx bx-group'></i> Teams</a></li>
       <li class="nav-item"><a class="nav-link" href="pages-profile-projects.html"><i class='bx bx-grid-alt'></i> Projects</a></li>
       <li class="nav-item"><a class="nav-link" href="pages-profile-connections.html"><i class='bx bx-link-alt'></i> Connections</a></li> --}}
@@ -72,64 +70,80 @@
                 <!-- About User -->
                 <div class="card mb-4">
                     <div class="card-body">
+                        <small class="text-muted text-uppercase">Personal Info</small>
+                        <ul class="list-unstyled mb-4 mt-3">
+                            <li class="d-flex align-items-center mb-3"><i class="bx bx-user"></i><span
+                                    class="fw-semibold mx-2">First Name:</span> <span>{{ $driver->firstname }}</span></li>
+                            <li class="d-flex align-items-center mb-3"><i class="bx bx-user"></i><span
+                                    class="fw-semibold mx-2">Last Name:</span> <span>{{ $driver->lastname }}</span></li>
+                            <li class="d-flex align-items-center mb-3"><i class="bx bx-user"></i><span
+                                class="fw-semibold mx-2">Username:</span> <span>{{ $driver->username }}</span></li>
+                                <li class="d-flex align-items-center mb-3"><i class="bx bx-phone"></i><span
+                                    class="fw-semibold mx-2">Contact:</span> <span>{{ $driver->phone }}</span></li>
+                           
+                            <li class="d-flex align-items-center mb-3"><i class="bx bx-envelope"></i><span
+                                    class="fw-semibold mx-2">Email:</span> <span>{{ $driver->email }}</span></li>
+                                <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                                    class="fw-semibold mx-2">Business URL:</span> <span>{{ $driver->businessurl  }}</span></li>
+                        </ul>
+                        <small class="text-muted text-uppercase">Work State</small>
+
+                        <ul class="list-unstyled mb-4 mt-3">
+                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                                    class="fw-semibold mx-2">Duty Status:</span> <span>{{ $driver->dutystatus ? 'Yes' : 'No' }}</span></li>
+                                    <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                                        class="fw-semibold mx-2">Admin Approved:</span> <span>{{ $driver->adminapproved ? "Yes" : "No" }}</span></li>
+
+                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                                    class="fw-semibold mx-2">Payment Status:</span> <span>{{ $driver->paymentstatus ? "Yes" : "No" }}</span></li>
+                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i></i><span
+                                    class="fw-semibold mx-2">4 Seater Vehicle:</span> <span>{{ $driver->{"4seatervehicle"} ? "Yes" : "No" }}</span></li>
+                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                                    class="fw-semibold mx-2">8 Seater Vehicle:</span> <span>{{ $driver->{"8seatervehicle"} ? "Yes" : "No" }}</span></li>
+                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                                    class="fw-semibold mx-2">Estate Vehicle:</span> <span>{{ $driver->estatevehicle ? "Yes" : "No" }}</span></li>
+                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                                class="fw-semibold mx-2">Courier Vehicle:</span> <span>{{ $driver->courier ? "Yes" : "No" }}</span></li>
+                                <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                                    class="fw-semibold mx-2">Easy Access Vehicle:</span> <span>{{ $driver->easyaccessvehicle ? "Yes" : "No" }}</span></li>
+                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                                    class="fw-semibold mx-2">AirPort Runs:</span> <span>{{ $driver->airportruns ? "Yes" : "No" }}</span></li>
+                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                                    class="fw-semibold mx-2">Wheel Chair Friendly:</span> <span>{{ $driver->wheelchairfriendly ? "Yes" : "No" }}</span></li>
+                                    
+                        </ul>
+                       
+
+                        <small class="text-muted text-uppercase">License</small>
+                        <ul class="list-unstyled mb-4 mt-3">
+                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                                    class="fw-semibold mx-2">Number:</span> <span>{{ $driver->licensenumber }}</span></li>
+                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                                    class="fw-semibold mx-2">Expiry:</span> <span>{{ $driver->licenseexpiry->toFormattedDateString()  }}</span></li>
+                        </ul>
+
                         <small class="text-muted text-uppercase">About</small>
                         <ul class="list-unstyled mb-4 mt-3">
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-user"></i><span
-                                    class="fw-semibold mx-2">Full Name:</span> <span>Luke</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-user"></i><span
-                                    class="fw-semibold mx-2">Last Name:</span> <span>Williams</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-check"></i><span
-                                    class="fw-semibold mx-2">Status:</span> <span>Active</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-star"></i><span
-                                    class="fw-semibold mx-2">Payment Status:</span> <span>Yes</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-flag"></i><span
-                                    class="fw-semibold mx-2">4 Seater Vehicle:</span> <span>Yes</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
-                                    class="fw-semibold mx-2">8 Seater Vehicle:</span> <span>Yes</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
-                                    class="fw-semibold mx-2">Estate Vehicle:</span> <span>No</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
-                                    class="fw-semibold mx-2">AirPort Runs:</span> <span>Yes</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
-                                    class="fw-semibold mx-2">Wheel Chair Friendly:</span> <span>Yes</span></li>
+                            {{ $driver->description }}
                         </ul>
-                        <small class="text-muted text-uppercase">Contacts</small>
-                        <ul class="list-unstyled mb-4 mt-3">
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-phone"></i><span
-                                    class="fw-semibold mx-2">Contact:</span> <span>07123456789</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-chat"></i><span
-                                    class="fw-semibold mx-2">Admin Approved:</span> <span>Yes</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-envelope"></i><span
-                                    class="fw-semibold mx-2">Email:</span> <span>lukescabs@gmail.com</span></li>
-                        </ul>
-                        <small class="text-muted text-uppercase">Teams</small>
-                        <ul class="list-unstyled mt-3 mb-0">
-                            <li class="d-flex align-items-center mb-3"><i class="bx bxl-github text-primary me-2"></i>
-                                <div class="d-flex flex-wrap"><span class="fw-semibold me-2">Backend
-                                        Developer</span><span>(126 Members)</span></div>
-                            </li>
-                            <li class="d-flex align-items-center"><i class="bx bxl-react text-info me-2"></i>
-                                <div class="d-flex flex-wrap"><span class="fw-semibold me-2">React Developer</span><span>(98
-                                        Members)</span></div>
-                            </li>
-                        </ul>
+                       
                     </div>
                 </div>
                 <!--/ About User -->
                 <!-- Profile Overview -->
-                <div class="card mb-4">
+                {{-- <div class="card mb-4">
                     <div class="card-body">
                         <small class="text-muted text-uppercase">Overview</small>
                         <ul class="list-unstyled mt-3 mb-0">
                             <li class="d-flex align-items-center mb-3"><i class="bx bx-check"></i><span
-                                    class="fw-semibold mx-2">Task Compiled:</span> <span>13.5k</span></li>
+                                    class="fw-semibold mx-2">Payment Status:</span> <span>13.5k</span></li>
                             <li class="d-flex align-items-center mb-3"><i class='bx bx-customize'></i><span
                                     class="fw-semibold mx-2">Projects Compiled:</span> <span>146</span></li>
                             <li class="d-flex align-items-center"><i class="bx bx-user"></i><span
                                     class="fw-semibold mx-2">Connections:</span> <span>897</span></li>
                         </ul>
                     </div>
-                </div>
+                </div> --}}
                 <!--/ Profile Overview -->
             </div>
             <div class="col-xl-8 col-lg-7 col-md-7">
