@@ -45,9 +45,9 @@
                                         </li>
 
                                         <li class="list-inline-item fw-semibold">
-                                            Duty status: 
+                                            You are <span id="duty-status-text"><b>{{ $driver->dutystatus ? "on" : "off" }}</b></span> duty
                                             <label class="switch switch-success">
-                                                <input type="checkbox" class="switch-input" @checked( $driver->dutystatus ) />
+                                                <input type="checkbox" class="switch-input" @checked( $driver->dutystatus ) onchange="changeDutyStatus()"/>
                                                 <span class="switch-toggle-slider">
                                                   <span class="switch-on">
                                                     <i class="bx bx-check"></i>
@@ -152,7 +152,7 @@
 
 
                 <!-- Payment History -->
-                <div class="card card-action mb-4">
+                <div class="card card-action mb-4 payment-history-mobile d-none d-md-block">
                     <div class="card-header align-items-center">
                         <h5 class="card-action-title mb-0">{{ $driver->payments->count() ? "Payment History" : "No Payment History yet" }}</h5>
                        {{--  <div class="card-action-element btn-pinned">
@@ -280,6 +280,63 @@
                     </div>
                 </div>
                 <!--/ Driver Message End -->
+
+
+                 <!-- Payment History -->
+                 <div class="card card-action mb-4 payment-history-mobile d-md-none">
+                    <div class="card-header align-items-center">
+                        <h5 class="card-action-title mb-0">{{ $driver->payments->count() ? "Payment History" : "No Payment History yet" }}</h5>
+                       {{--  <div class="card-action-element btn-pinned">
+                            <div class="dropdown">
+                                <button type="button" class="btn dropdown-toggle hide-arrow p-0"
+                                    data-bs-toggle="dropdown" aria-expanded="false"><i
+                                        class="bx bx-dots-vertical-rounded"></i></button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Share teams</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Suggest edits</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Report bug</a></li>
+                                </ul>
+                            </div>
+                        </div> --}}
+                    </div>
+                    <div class="card-body payment-history">
+                        <ul class="list-unstyled mb-0">
+
+                            @foreach ( $driver->payments as  $payment )
+
+                                <li class="mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="d-flex align-items-start">
+                                            <div class="me-2">
+                                                <h6 class="mb-0">{{ $payment->paymentdatetime->toDayDateTimeString() }}</h6>
+                                            </div>
+                                        </div>
+                                        <div class="ms-auto">
+                                            <a href="javascript:;"><span
+                                                    class="badge bg-label-danger">{{ $payment->paymentamount }}</span></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                
+                                
+                            @endforeach
+                            
+                            
+
+
+
+                           {{--  <li class="text-center">
+                                <a href="javascript:;">View all teams</a>
+                            </li> --}}
+                        </ul>
+                    </div>
+                </div>
+                <!--/ Payment History -->
+
+                
 
                 <div class="row">
                     <!-- Connections -->
@@ -416,6 +473,12 @@
     {
         $('.driver-messages-tbody .seen-message').toggle()
 
+    }
+
+    function changeDutyStatus()
+    {
+        let dutyStatus = event.target.checked ? "on" : "off";
+        $('#duty-status-text').text(dutyStatus);
     }
 </script>
 @endpush
