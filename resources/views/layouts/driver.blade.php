@@ -138,7 +138,7 @@
                                     <a class="nav-link style-switcher-toggle hide-arrow" href="javascript:void(0);">
                                         <i class='bx bx-sm'></i>
                                     </a>
-                                </li> --}}
+                                </li> 
                                 <!--/ Style Switcher -->
 
                                 <!-- Quick links  -->
@@ -496,7 +496,9 @@
                                 <!-- User -->
                                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                                     <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
-                                        data-bs-toggle="dropdown">
+                                    data-bs-toggle="dropdown" >
+
+                                        
                                         <div class="avatar ">
                                           @if ( auth()->guard('driveruser')->user()?->photo )
                                             <img src="data:image/png;base64,{{ chunk_split(base64_encode(auth()->guard('driveruser')->user()?->photo?->driversphoto) ) }}" alt class="rounded-circle">
@@ -510,15 +512,9 @@
                                         <li>
                                             <a class="dropdown-item" href="pages-account-settings-account.html">
                                                 <div class="d-flex">
-                                                    <div class="flex-shrink-0 me-3">
-                                                        <div class="avatar avatar-online">
-                                                            <img src="../../assets/img/avatars/1.png" alt
-                                                                class="rounded-circle">
-                                                        </div>
-                                                    </div>
                                                     <div class="flex-grow-1">
-                                                        <span class="fw-semibold d-block lh-1">John Doe</span>
-                                                        <small>Admin</small>
+                                                        <span class="fw-semibold d-block lh-1">{{ $driver->full_name }}</span>
+                                                        <small>Driver</small>
                                                     </div>
                                                 </div>
                                             </a>
@@ -526,7 +522,7 @@
                                         <li>
                                             <div class="dropdown-divider"></div>
                                         </li>
-                                        <li>
+                                        {{-- <li>
                                             <a class="dropdown-item" href="pages-profile-user.html">
                                                 <i class="bx bx-user me-2"></i>
                                                 <span class="align-middle">My Profile</span>
@@ -571,9 +567,9 @@
                                         </li>
                                         <li>
                                             <div class="dropdown-divider"></div>
-                                        </li>
+                                        </li> --}}
                                         <li>
-                                            <a class="dropdown-item" href="auth-login-cover.html" target="_blank">
+                                            <a class="dropdown-item" href="{{ route('logout') }}" >
                                                 <i class="bx bx-power-off me-2"></i>
                                                 <span class="align-middle">Log Out</span>
                                             </a>

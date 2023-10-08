@@ -116,6 +116,10 @@
 
                         <small class="text-muted text-uppercase">License</small>
                         <ul class="list-unstyled mb-4 mt-3">
+                            <li class="d-flex align-items-center mb-3">
+
+                                <img style="width: 100%; height: auto" src="data:image/png;base64,{{ chunk_split(base64_encode($driver->license->licensephoto) ) }}" alt="">
+                            </li>
                             <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
                                     class="fw-semibold mx-2">Number:</span> <span>{{ $driver->licensenumber }}</span></li>
                             <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
@@ -130,6 +134,8 @@
                     </div>
                 </div>
                 <!--/ About User -->
+
+
                 <!-- Profile Overview -->
                 {{-- <div class="card mb-4">
                     <div class="card-body">
@@ -147,11 +153,13 @@
                 <!--/ Profile Overview -->
             </div>
             <div class="col-xl-8 col-lg-7 col-md-7">
+
                 <!-- Activity Timeline -->
                 <div class="card card-action mb-4">
                     <div class="card-header align-items-center">
-                        <h5 class="card-action-title mb-0"><i class='bx bx-list-ul bx-sm me-2'></i>Call History</h5>
-                        <div class="card-action-element btn-pinned">
+                        <h5 class="card-action-title mb-0"><i class='bx bx-list-ul bx-sm me-2'></i>{{ $driver->calls->count() ? "Call History" : "No Calls Yet" }}</h5>
+                        {{-- Card Actions --}}
+                        {{-- <div class="card-action-element btn-pinned">
                             <div class="dropdown">
                                 <button type="button" class="btn dropdown-toggle hide-arrow p-0"
                                     data-bs-toggle="dropdown" aria-expanded="false"><i
@@ -165,64 +173,77 @@
                                     <li><a class="dropdown-item" href="javascript:void(0);">Report bug</a></li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="card-body">
                         <ul class="timeline ms-2">
+                            @foreach ( $driver->calls as $call)
                             <li class="timeline-item timeline-item-transparent">
                                 <span class="timeline-point timeline-point-warning"></span>
                                 <div class="timeline-event">
                                     <div class="timeline-header mb-1">
-                                        <h6 class="mb-0">Stowmarket, Suffolk</h6>
-                                        <small class="text-muted">Today</small>
+                                        <h6 class="mb-0">{{ $call->location->town }}, {{ $call->location->county }}</h6>
+                                        <small class="text-muted">{{ $call->datetime->diffForHumans() }}</small>
                                     </div>
-                                    <p class="mb-2">09/18/2023 12:58 PM</p>
+                                    <p class="mb-2">{{ $call->datetime->toDayDateTimeString() }}</p>
 
                                 </div>
                             </li>
-                            <li class="timeline-item timeline-item-transparent">
-                                <span class="timeline-point timeline-point-info"></span>
-                                <div class="timeline-event">
-                                    <div class="timeline-header mb-1">
-                                        <h6 class="mb-0">Stowmarket, Suffolk</h6>
-                                        <small class="text-muted">2 Day Ago</small>
-                                    </div>
-                                    <p class="mb-0">09/14/2023 03:59 PM</p>
-                                </div>
-                            </li>
-                            <li class="timeline-item timeline-item-transparent">
-                                <span class="timeline-point timeline-point-primary"></span>
-                                <div class="timeline-event">
-                                    <div class="timeline-header mb-1">
-                                        <h6 class="mb-0">Stowmarket, Suffolk</h6>
-                                        <small class="text-muted">08/18/2023 03:16 PM</small>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="timeline-item timeline-item-transparent">
-                                <span class="timeline-point timeline-point-success"></span>
-                                <div class="timeline-event pb-0">
-                                    <div class="timeline-header mb-1">
-                                        <h6 class="mb-0">Stowmarket, Suffolk</h6>
-                                        <small class="text-muted">10 Day Ago</small>
-                                    </div>
-                                    <p class="mb-0">07/27/2023 03:10 PM</p>
-                                </div>
-                            </li>
-                            <li class="timeline-end-indicator">
-                                <i class="bx bx-check-circle"></i>
-                            </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
                 <!--/ Activity Timeline -->
+
+                <!-- Driver Messages -->
+                <div class="card card-action mb-4">
+                    <div class="card-header align-items-center">
+                        <h5 class="card-action-title mb-0"><i class='bx bx-list-ul bx-sm me-2'></i>{{ $driver->calls->count() ? "Driver Messages" : "No Messages Yet" }}</h5>
+                        {{-- Card Actions --}}
+                        {{-- <div class="card-action-element btn-pinned">
+                            <div class="dropdown">
+                                <button type="button" class="btn dropdown-toggle hide-arrow p-0"
+                                    data-bs-toggle="dropdown" aria-expanded="false"><i
+                                        class="bx bx-dots-vertical-rounded"></i></button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Share timeline</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Suggest edits</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Report bug</a></li>
+                                </ul>
+                            </div>
+                        </div> --}}
+                    </div>
+                    <div class="card-body">
+                        <ul class=" ms-2">
+                            @foreach ( $driver->messages as $message)
+                            <li class="mb-3">
+                                <div class="row">
+                                    <div class="col-8">
+                                        {{ $message->message->messagetext }}
+                                    </div>
+                                    <div class="col-2">
+                                        {{ $message->messagedatetime->toDayDateTimeString() }}
+                                    </div>
+                                </div>
+                            </li>
+                            <hr>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                <!--/ Driver Message End -->
+
+
                 <div class="row">
                     <!-- Connections -->
                     <div class="col-lg-12 col-xl-6">
                         <div class="card card-action mb-4">
                             <div class="card-header align-items-center">
                                 <h5 class="card-action-title mb-0">Driver Locations</h5>
-                                <div class="card-action-element btn-pinned">
+                               {{--  <div class="card-action-element btn-pinned">
                                     <div class="dropdown">
                                         <button type="button" class="btn dropdown-toggle hide-arrow p-0"
                                             data-bs-toggle="dropdown" aria-expanded="false"><i
@@ -237,107 +258,29 @@
                                             <li><a class="dropdown-item" href="javascript:void(0);">Report bug</a></li>
                                         </ul>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="card-body">
                                 <ul class="list-unstyled mb-0">
+                                    @foreach ( $driver->locations as $location )
                                     <li class="mb-3">
                                         <div class="d-flex align-items-start">
                                             <div class="d-flex align-items-start">
                                                 <div class="me-2">
-                                                    <h6 class="mb-0">Acton, Suffolk</h6>
+                                                    <h6 class="mb-0">{{ $location->town }}, {{ $location->county }}</h6>
                                                 </div>
                                             </div>
                                             <div class="ms-auto">
-                                                <button class="btn btn-label-primary p-1 btn-sm"><i
-                                                        class="bx bx-map"></i></button>
+                                                <a target="_blank" href="http://www.google.com/maps/place/{{ $location->latitude }},{{$location->longitude}}" class="btn btn-label-primary p-1 btn-sm"><i
+                                                        class="bx bx-map"></i></a>
                                             </div>
                                         </div>
                                     </li>
-                                    <li class="mb-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="d-flex align-items-start">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">Acton Place, Suffolk</h6>
-                                                </div>
-                                            </div>
-                                            <div class="ms-auto">
-                                                <button class="btn btn-label-primary p-1 btn-sm"><i
-                                                        class="bx bx-map"></i></button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="mb-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="d-flex align-items-start">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">Acton Place, Suffolk</h6>
-                                                </div>
-                                            </div>
-                                            <div class="ms-auto">
-                                                <button class="btn btn-label-primary p-1 btn-sm"><i
-                                                        class="bx bx-map"></i></button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="mb-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="d-flex align-items-start">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">Aldham, Suffolk</h6>
-                                                </div>
-                                            </div>
-                                            <div class="ms-auto">
-                                                <button class="btn btn-label-primary p-1 btn-sm"><i
-                                                        class="bx bx-map"></i></button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="mb-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="d-flex align-items-start">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">Allwood Green, Suffolk</h6>
-                                                </div>
-                                            </div>
-                                            <div class="ms-auto">
-                                                <button class="btn btn-label-primary p-1 btn-sm"><i
-                                                        class="bx bx-map"></i></button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="mb-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="d-flex align-items-start">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">Almshouse Green, Suffolk</h6>
-                                                </div>
-                                            </div>
-                                            <div class="ms-auto">
-                                                <button class="btn btn-label-primary p-1 btn-sm"><i
-                                                        class="bx bx-map"></i></button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="mb-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="d-flex align-items-start">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">Alpheton, Suffolk</h6>
-                                                </div>
-                                            </div>
-                                            <div class="ms-auto">
-                                                <button class="btn btn-label-primary p-1 btn-sm"><i
-                                                        class="bx bx-map"></i></button>
-                                            </div>
-                                        </div>
-                                    </li>
-
-
-
-                                    <li class="text-center">
+                                    @endforeach
+                                    
+                                    {{-- <li class="text-center">
                                         <a href="javascript:;">View all teams</a>
-                                    </li>
+                                    </li> --}}
 
                                 </ul>
                             </div>
@@ -348,8 +291,8 @@
                     <div class="col-lg-12 col-xl-6">
                         <div class="card card-action mb-4">
                             <div class="card-header align-items-center">
-                                <h5 class="card-action-title mb-0">Payment History</h5>
-                                <div class="card-action-element btn-pinned">
+                                <h5 class="card-action-title mb-0">{{ $driver->payments->count() ? "Payment History" : "No Payment History yet" }}</h5>
+                               {{--  <div class="card-action-element btn-pinned">
                                     <div class="dropdown">
                                         <button type="button" class="btn dropdown-toggle hide-arrow p-0"
                                             data-bs-toggle="dropdown" aria-expanded="false"><i
@@ -363,107 +306,36 @@
                                             <li><a class="dropdown-item" href="javascript:void(0);">Report bug</a></li>
                                         </ul>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="card-body">
                                 <ul class="list-unstyled mb-0">
-                                    <li class="mb-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="d-flex align-items-start">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">06/15/2023 17:06 PM</h6>
+
+                                    @foreach ( $driver->payments as  $payment )
+
+                                        <li class="mb-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="me-2">
+                                                        <h6 class="mb-0">{{ $payment->paymentdatetime->toDayDateTimeString() }}</h6>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-auto">
+                                                    <a href="javascript:;"><span
+                                                            class="badge bg-label-danger">{{ $payment->paymentamount }}</span></a>
                                                 </div>
                                             </div>
-                                            <div class="ms-auto">
-                                                <a href="javascript:;"><span
-                                                        class="badge bg-label-danger">50.00</span></a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="mb-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="d-flex align-items-start">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">06/15/2023 17:06 PM</h6>
-                                                </div>
-                                            </div>
-                                            <div class="ms-auto">
-                                                <a href="javascript:;"><span
-                                                        class="badge bg-label-danger">530.00</span></a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="mb-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="d-flex align-items-start">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">06/15/2023 17:06 PM</h6>
-                                                </div>
-                                            </div>
-                                            <div class="ms-auto">
-                                                <a href="javascript:;"><span
-                                                        class="badge bg-label-danger">540.00</span></a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="mb-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="d-flex align-items-start">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">06/15/2023 17:06 PM</h6>
-                                                </div>
-                                            </div>
-                                            <div class="ms-auto">
-                                                <a href="javascript:;"><span
-                                                        class="badge bg-label-danger">550.00</span></a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="mb-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="d-flex align-items-start">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">06/15/2023 17:06 PM</h6>
-                                                </div>
-                                            </div>
-                                            <div class="ms-auto">
-                                                <a href="javascript:;"><span
-                                                        class="badge bg-label-danger">650.00</span></a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="mb-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="d-flex align-items-start">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">06/15/2023 17:06 PM</h6>
-                                                </div>
-                                            </div>
-                                            <div class="ms-auto">
-                                                <a href="javascript:;"><span
-                                                        class="badge bg-label-danger">150.00</span></a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="mb-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="d-flex align-items-start">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">06/15/2023 17:06 PM</h6>
-                                                </div>
-                                            </div>
-                                            <div class="ms-auto">
-                                                <a href="javascript:;"><span
-                                                        class="badge bg-label-danger">350.00</span></a>
-                                            </div>
-                                        </div>
-                                    </li>
+                                        </li>
+                                        
+                                    @endforeach
+                                    
+                                    
 
 
 
-                                    <li class="text-center">
+                                   {{--  <li class="text-center">
                                         <a href="javascript:;">View all teams</a>
-                                    </li>
+                                    </li> --}}
                                 </ul>
                             </div>
                         </div>
@@ -471,7 +343,7 @@
                     <!--/ Teams -->
                 </div>
                 <!-- Projects table -->
-                <div class="card">
+                {{-- <div class="card">
                     <div class="card-datatable table-responsive">
                         <table class="datatables-projects border-top table">
                             <thead>
@@ -487,7 +359,7 @@
                             </thead>
                         </table>
                     </div>
-                </div>
+                </div> --}}
                 <!--/ Projects table -->
             </div>
         </div>
