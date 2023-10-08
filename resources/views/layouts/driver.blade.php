@@ -691,6 +691,8 @@
 
     <!-- Page JS -->
     <script src="{{ asset('/assetss/js/app-invoice-list.js') }}"></script>
+
+    @stack('body_scripts')
 </body>
 
 

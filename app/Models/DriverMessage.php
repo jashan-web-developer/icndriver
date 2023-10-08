@@ -11,6 +11,7 @@ class DriverMessage extends Model
 
     protected $casts = [
         'messagedatetime' => 'datetime',
+        'messagestatus' => 'bool',
     ];
 
     /**

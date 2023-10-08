@@ -231,7 +231,38 @@
                         </div> --}}
                     </div>
                     <div class="card-body driver-messages">
-                        <ul class=" ms-2">
+
+                        <div class="table-actions-jsn mb-2">
+                            <div class="form-check mt-3">
+                                <input class="form-check-input bg-primary-checkbox" type="checkbox" value="" id="defaultCheck1" onchange="toggleUnreadMessages()"/>
+                                <label class="form-check-label" for="defaultCheck1">
+                                  Show only unread messages
+                                </label>
+                              </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                              <thead class="table-dark">
+                                <tr>
+                                  <th>Message</th>
+                                  <th>Datetime</th>
+                                </tr>
+                              </thead>
+                              <tbody class="driver-messages-tbody">
+                                
+                                @foreach ($driver->messages as $driverMessage) 
+                                    <tr class="{{ $driverMessage->messagestatus ? 'seen-message' : 'table-danger unseen-message' }}">
+                                      <td class="col-9">{{ $driverMessage->message->messagetext }}</td>
+                                      <td class="col-3">
+                                       {{ $driverMessage->messagedatetime->toFormattedDateString() }}
+                                      </td>
+                                     
+                                    </tr>
+                                @endforeach
+                              </tbody>
+                            </table>
+                          </div>
+                        {{-- <ul class=" ms-2">
                             @foreach ( $driver->messages as $message)
                             <li class="mb-3">
                                 <div class="row">
@@ -245,7 +276,7 @@
                             </li>
                             <hr>
                             @endforeach
-                        </ul>
+                        </ul> --}}
                     </div>
                 </div>
                 <!--/ Driver Message End -->
@@ -377,3 +408,14 @@
     </div>
     <!-- / Content -->
 @endsection
+
+
+@push('body_scripts')
+<script>
+    function toggleUnreadMessages()
+    {
+        $('.driver-messages-tbody .seen-message').toggle()
+
+    }
+</script>
+@endpush
