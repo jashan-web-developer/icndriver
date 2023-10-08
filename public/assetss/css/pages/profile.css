@@ -1,0 +1,4 @@
+.card-body.call-history, .card-body.driver-messages, .card-body.driver-locations, .card-body.payment-history {
+    max-height: 400px;
+    overflow-y: auto;
+}

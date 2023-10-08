@@ -1,5 +1,9 @@
 @extends('layouts.driver')
 
+@push('head_tags')
+
+<link rel='stylesheet' href="{{ asset('/assetss/css/pages/profile.css') }}" data-name="jashan"/>
+@endpush
 
 @section('title', 'Profile')
 @section('content')
@@ -17,8 +21,8 @@
         <div class="row">
             <div class="col-12">
                 <div class="card mb-4">
-                    <div class="user-profile-header-banner">
-                        <img src="{{ asset('/assetss/img/pages/profile-banner.png') }}" alt="Banner image" class="rounded-top">
+                    <div class="user-profile-header-banner ">
+                        <img class="w-100" src="{{ asset('/assetss/img/pages/profile-banner.png') }}" alt="Banner image" class="rounded-top">
                     </div>
                     <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
                         <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
@@ -149,7 +153,7 @@
                             </div>
                         </div> --}}
                     </div>
-                    <div class="card-body">
+                    <div class="card-body payment-history">
                         <ul class="list-unstyled mb-0">
 
                             @foreach ( $driver->payments as  $payment )
@@ -167,6 +171,7 @@
                                         </div>
                                     </div>
                                 </li>
+                                
                                 
                             @endforeach
                             
@@ -207,7 +212,7 @@
                             </div>
                         </div> --}}
                     </div>
-                    <div class="card-body">
+                    <div class="card-body driver-messages">
                         <ul class=" ms-2">
                             @foreach ( $driver->messages as $message)
                             <li class="mb-3">
@@ -250,7 +255,7 @@
                                     </div>
                                 </div> --}}
                             </div>
-                            <div class="card-body">
+                            <div class="card-body driver-locations">
                                 <ul class="list-unstyled mb-0">
                                     @foreach ( $driver->locations as $location )
                                     <li class="mb-3">
@@ -266,6 +271,8 @@
                                             </div>
                                         </div>
                                     </li>
+
+                                    
                                     @endforeach
                                     
                                     {{-- <li class="text-center">
@@ -301,7 +308,7 @@
                             </div>
                         </div> --}}
                     </div>
-                    <div class="card-body">
+                    <div class="card-body call-history">
                         <ul class="timeline ms-2">
                             @foreach ( $driver->calls as $call)
                             <li class="timeline-item timeline-item-transparent">

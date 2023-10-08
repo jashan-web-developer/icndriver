@@ -77,6 +77,8 @@
     <!-- Custom notification for demo -->
     <!-- beautify ignore:end -->
 
+    @stack('head_tags')
+
 </head>
 
 <body>
