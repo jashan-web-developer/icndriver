@@ -25,6 +25,7 @@ class Driver extends Authenticatable
     protected $casts = [
         'signupdate' => 'date',
         'licenseexpiry' => 'date',
+        'driverstatus' => 'bool',
     ];
 
 

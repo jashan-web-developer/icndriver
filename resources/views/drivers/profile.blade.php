@@ -33,7 +33,7 @@
                             <div
                                 class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-4 flex-md-row flex-column gap-4">
                                 <div class="user-profile-info">
-                                    <h4>{{ $driver->firstname }} {{ $driver->lastname }}</h4>
+                                    <h4>{{ $driver->full_name }} </h4>
                                     <ul
                                         class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
                                         <li class="list-inline-item fw-semibold">
@@ -42,6 +42,24 @@
                                        
                                         <li class="list-inline-item fw-semibold">
                                             <i class='bx bx-calendar-alt'></i> Joined on {{ $driver->signupdate->toFormattedDateString() }}
+                                        </li>
+
+                                        <li class="list-inline-item fw-semibold">
+                                            Duty status: 
+                                            <label class="switch switch-success">
+                                                <input type="checkbox" class="switch-input" @checked( $driver->dutystatus ) />
+                                                <span class="switch-toggle-slider">
+                                                  <span class="switch-on">
+                                                    <i class="bx bx-check"></i>
+                                                    On Duty
+                                                  </span>
+                                                  <span class="switch-off">
+                                                    <i class="bx bx-x"></i> Off duty
+                                                  </span>
+                                                </span>
+                                              </label>
+                                              
+                                              
                                         </li>
                                     </ul>
                                 </div>
