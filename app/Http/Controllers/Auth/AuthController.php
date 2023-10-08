@@ -91,7 +91,12 @@ class AuthController extends Controller
     public function dashboard()
     {
         $driver = auth()->guard('driveruser')->user();
-        $driver->load(['photo', 'calls.location', 'payments', 'license']);
+        $driver->load(['photo', 'calls.location', 'payments', 'license', 'messages']);
+
+        $driver->calls = $driver->calls->sortByDesc('datetime');
+        $driver->payments = $driver->payments->sortByDesc('paymentdatetime');
+        $driver->messages = $driver->messages->sortByDesc('messages');
+        
         return view('drivers.profile', compact('driver'));
 
 
