@@ -72,10 +72,7 @@
                     <div class="card-body">
                         <small class="text-muted text-uppercase">Personal Info</small>
                         <ul class="list-unstyled mb-4 mt-3">
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-user"></i><span
-                                    class="fw-semibold mx-2">First Name:</span> <span>{{ $driver->firstname }}</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-user"></i><span
-                                    class="fw-semibold mx-2">Last Name:</span> <span>{{ $driver->lastname }}</span></li>
+                          
                             <li class="d-flex align-items-center mb-3"><i class="bx bx-user"></i><span
                                 class="fw-semibold mx-2">Username:</span> <span>{{ $driver->username }}</span></li>
                                 <li class="d-flex align-items-center mb-3"><i class="bx bx-phone"></i><span
@@ -86,29 +83,28 @@
                                 <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
                                     class="fw-semibold mx-2">Business URL:</span> <span>{{ $driver->businessurl  }}</span></li>
                         </ul>
-                        <small class="text-muted text-uppercase">Work State</small>
+                        <small class="text-muted text-uppercase">About</small>
+                        <ul class="list-unstyled mb-4 mt-3">
+                            {{ $driver->description }}
+                        </ul>
+                        
+                        <small class="text-muted text-uppercase">Vehicle Details</small>
 
                         <ul class="list-unstyled mb-4 mt-3">
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
-                                    class="fw-semibold mx-2">Duty Status:</span> <span>{{ $driver->dutystatus ? 'Yes' : 'No' }}</span></li>
-                                    <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
-                                        class="fw-semibold mx-2">Admin Approved:</span> <span>{{ $driver->adminapproved ? "Yes" : "No" }}</span></li>
-
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
-                                    class="fw-semibold mx-2">Payment Status:</span> <span>{{ $driver->paymentstatus ? "Yes" : "No" }}</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i></i><span
+                            
+                            <li class="d-flex align-items-center mb-3"><i class='bx bx-car'></i></i></i><span
                                     class="fw-semibold mx-2">4 Seater Vehicle:</span> <span>{{ $driver->{"4seatervehicle"} ? "Yes" : "No" }}</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                            <li class="d-flex align-items-center mb-3"><i class='bx bx-car'></i></i><span
                                     class="fw-semibold mx-2">8 Seater Vehicle:</span> <span>{{ $driver->{"8seatervehicle"} ? "Yes" : "No" }}</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                            <li class="d-flex align-items-center mb-3"><i class='bx bx-car'></i></i><span
                                     class="fw-semibold mx-2">Estate Vehicle:</span> <span>{{ $driver->estatevehicle ? "Yes" : "No" }}</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                            <li class="d-flex align-items-center mb-3"><i class='bx bx-car'></i></i><span
                                 class="fw-semibold mx-2">Courier Vehicle:</span> <span>{{ $driver->courier ? "Yes" : "No" }}</span></li>
-                                <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                                <li class="d-flex align-items-center mb-3"><i class='bx bx-car'></i></i><span
                                     class="fw-semibold mx-2">Easy Access Vehicle:</span> <span>{{ $driver->easyaccessvehicle ? "Yes" : "No" }}</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                            <li class="d-flex align-items-center mb-3"><i class='bx bx-car'></i></i><span
                                     class="fw-semibold mx-2">AirPort Runs:</span> <span>{{ $driver->airportruns ? "Yes" : "No" }}</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-detail"></i><span
+                            <li class="d-flex align-items-center mb-3"><i class='bx bx-car'></i></i><span
                                     class="fw-semibold mx-2">Wheel Chair Friendly:</span> <span>{{ $driver->wheelchairfriendly ? "Yes" : "No" }}</span></li>
                                     
                         </ul>
@@ -126,46 +122,24 @@
                                     class="fw-semibold mx-2">Expiry:</span> <span>{{ $driver->licenseexpiry->toFormattedDateString()  }}</span></li>
                         </ul>
 
-                        <small class="text-muted text-uppercase">About</small>
-                        <ul class="list-unstyled mb-4 mt-3">
-                            {{ $driver->description }}
-                        </ul>
+                        
                        
                     </div>
                 </div>
                 <!--/ About User -->
 
 
-                <!-- Profile Overview -->
-                {{-- <div class="card mb-4">
-                    <div class="card-body">
-                        <small class="text-muted text-uppercase">Overview</small>
-                        <ul class="list-unstyled mt-3 mb-0">
-                            <li class="d-flex align-items-center mb-3"><i class="bx bx-check"></i><span
-                                    class="fw-semibold mx-2">Payment Status:</span> <span>13.5k</span></li>
-                            <li class="d-flex align-items-center mb-3"><i class='bx bx-customize'></i><span
-                                    class="fw-semibold mx-2">Projects Compiled:</span> <span>146</span></li>
-                            <li class="d-flex align-items-center"><i class="bx bx-user"></i><span
-                                    class="fw-semibold mx-2">Connections:</span> <span>897</span></li>
-                        </ul>
-                    </div>
-                </div> --}}
-                <!--/ Profile Overview -->
-            </div>
-            <div class="col-xl-8 col-lg-7 col-md-7">
-
-                <!-- Activity Timeline -->
+                <!-- Payment History -->
                 <div class="card card-action mb-4">
                     <div class="card-header align-items-center">
-                        <h5 class="card-action-title mb-0"><i class='bx bx-list-ul bx-sm me-2'></i>{{ $driver->calls->count() ? "Call History" : "No Calls Yet" }}</h5>
-                        {{-- Card Actions --}}
-                        {{-- <div class="card-action-element btn-pinned">
+                        <h5 class="card-action-title mb-0">{{ $driver->payments->count() ? "Payment History" : "No Payment History yet" }}</h5>
+                       {{--  <div class="card-action-element btn-pinned">
                             <div class="dropdown">
                                 <button type="button" class="btn dropdown-toggle hide-arrow p-0"
                                     data-bs-toggle="dropdown" aria-expanded="false"><i
                                         class="bx bx-dots-vertical-rounded"></i></button>
                                 <ul class="dropdown-menu dropdown-menu-end">
-                                    <li><a class="dropdown-item" href="javascript:void(0);">Share timeline</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Share teams</a></li>
                                     <li><a class="dropdown-item" href="javascript:void(0);">Suggest edits</a></li>
                                     <li>
                                         <hr class="dropdown-divider">
@@ -176,24 +150,41 @@
                         </div> --}}
                     </div>
                     <div class="card-body">
-                        <ul class="timeline ms-2">
-                            @foreach ( $driver->calls as $call)
-                            <li class="timeline-item timeline-item-transparent">
-                                <span class="timeline-point timeline-point-warning"></span>
-                                <div class="timeline-event">
-                                    <div class="timeline-header mb-1">
-                                        <h6 class="mb-0">{{ $call->location->town }}, {{ $call->location->county }}</h6>
-                                        <small class="text-muted">{{ $call->datetime->diffForHumans() }}</small>
-                                    </div>
-                                    <p class="mb-2">{{ $call->datetime->toDayDateTimeString() }}</p>
+                        <ul class="list-unstyled mb-0">
 
-                                </div>
-                            </li>
+                            @foreach ( $driver->payments as  $payment )
+
+                                <li class="mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="d-flex align-items-start">
+                                            <div class="me-2">
+                                                <h6 class="mb-0">{{ $payment->paymentdatetime->toDayDateTimeString() }}</h6>
+                                            </div>
+                                        </div>
+                                        <div class="ms-auto">
+                                            <a href="javascript:;"><span
+                                                    class="badge bg-label-danger">{{ $payment->paymentamount }}</span></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                
                             @endforeach
+                            
+                            
+
+
+
+                           {{--  <li class="text-center">
+                                <a href="javascript:;">View all teams</a>
+                            </li> --}}
                         </ul>
                     </div>
                 </div>
-                <!--/ Activity Timeline -->
+                <!--/ Payment History -->
+            </div>
+
+            
+            <div class="col-xl-8 col-lg-7 col-md-7">
 
                 <!-- Driver Messages -->
                 <div class="card card-action mb-4">
@@ -236,10 +227,9 @@
                 </div>
                 <!--/ Driver Message End -->
 
-
                 <div class="row">
                     <!-- Connections -->
-                    <div class="col-lg-12 col-xl-6">
+                    <div class="col-lg-12 ">
                         <div class="card card-action mb-4">
                             <div class="card-header align-items-center">
                                 <h5 class="card-action-title mb-0">Driver Locations</h5>
@@ -287,61 +277,54 @@
                         </div>
                     </div>
                     <!--/ Connections -->
-                    <!-- Teams -->
-                    <div class="col-lg-12 col-xl-6">
-                        <div class="card card-action mb-4">
-                            <div class="card-header align-items-center">
-                                <h5 class="card-action-title mb-0">{{ $driver->payments->count() ? "Payment History" : "No Payment History yet" }}</h5>
-                               {{--  <div class="card-action-element btn-pinned">
-                                    <div class="dropdown">
-                                        <button type="button" class="btn dropdown-toggle hide-arrow p-0"
-                                            data-bs-toggle="dropdown" aria-expanded="false"><i
-                                                class="bx bx-dots-vertical-rounded"></i></button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="javascript:void(0);">Share teams</a></li>
-                                            <li><a class="dropdown-item" href="javascript:void(0);">Suggest edits</a></li>
-                                            <li>
-                                                <hr class="dropdown-divider">
-                                            </li>
-                                            <li><a class="dropdown-item" href="javascript:void(0);">Report bug</a></li>
-                                        </ul>
-                                    </div>
-                                </div> --}}
-                            </div>
-                            <div class="card-body">
-                                <ul class="list-unstyled mb-0">
+                    
+                </div>
 
-                                    @foreach ( $driver->payments as  $payment )
-
-                                        <li class="mb-3">
-                                            <div class="d-flex align-items-center">
-                                                <div class="d-flex align-items-start">
-                                                    <div class="me-2">
-                                                        <h6 class="mb-0">{{ $payment->paymentdatetime->toDayDateTimeString() }}</h6>
-                                                    </div>
-                                                </div>
-                                                <div class="ms-auto">
-                                                    <a href="javascript:;"><span
-                                                            class="badge bg-label-danger">{{ $payment->paymentamount }}</span></a>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        
-                                    @endforeach
-                                    
-                                    
-
-
-
-                                   {{--  <li class="text-center">
-                                        <a href="javascript:;">View all teams</a>
-                                    </li> --}}
+                <!-- Call History -->
+                <div class="card card-action mb-4">
+                    <div class="card-header align-items-center">
+                        <h5 class="card-action-title mb-0"><i class='bx bx-list-ul bx-sm me-2'></i>{{ $driver->calls->count() ? "Call History" : "No Calls Yet" }}</h5>
+                        {{-- Card Actions --}}
+                        {{-- <div class="card-action-element btn-pinned">
+                            <div class="dropdown">
+                                <button type="button" class="btn dropdown-toggle hide-arrow p-0"
+                                    data-bs-toggle="dropdown" aria-expanded="false"><i
+                                        class="bx bx-dots-vertical-rounded"></i></button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Share timeline</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Suggest edits</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Report bug</a></li>
                                 </ul>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
-                    <!--/ Teams -->
+                    <div class="card-body">
+                        <ul class="timeline ms-2">
+                            @foreach ( $driver->calls as $call)
+                            <li class="timeline-item timeline-item-transparent">
+                                <span class="timeline-point timeline-point-warning"></span>
+                                <div class="timeline-event">
+                                    <div class="timeline-header mb-1">
+                                        <h6 class="mb-0">{{ $call->location->town }}, {{ $call->location->county }}</h6>
+                                        <small class="text-muted">{{ $call->datetime->diffForHumans() }}</small>
+                                    </div>
+                                    <p class="mb-2">{{ $call->datetime->toDayDateTimeString() }}</p>
+
+                                </div>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </div>
+                <!--/ Call History -->
+
+                
+
+
+               
                 <!-- Projects table -->
                 {{-- <div class="card">
                     <div class="card-datatable table-responsive">
