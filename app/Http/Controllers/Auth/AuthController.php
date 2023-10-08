@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Helthss;
 
 use Illuminate\Support\Facades\Auth;
-use Session;
+use Illuminate\Support\Facades\Session;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Hash;
 
 class AuthController extends Controller
@@ -93,15 +91,9 @@ class AuthController extends Controller
     public function dashboard()
     {
         $driver = auth()->guard('driveruser')->user();
+        $driver->load(['photo', 'calls.location', 'payments', 'license']);
         return view('drivers.profile', compact('driver'));
 
-        /*	print_r(Auth::guard('driveruser')->user());die;*/
-        /*if(Auth::guard('driveruser')->user()){
-			echo "Login Success";die;*/
-        // $products = Helthss::latest()->paginate(5);
-        //return view('helth.index',compact('products'))
-        //   ->with('i', (request()->input('page', 1) - 1) * 5);
-        /*}*/
 
         return redirect("login")->withSuccess('Opps! You do not have access');
     }
