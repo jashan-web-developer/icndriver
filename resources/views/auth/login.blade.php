@@ -89,7 +89,7 @@
                   </div>
                   <!-- right section image -->
                   <div class="col-md-6 d-md-block d-none text-center align-self-center p-3">
-                    <img class="img-fluid" src="{{ asset('public/assets/images/pages/login.png') }}" alt="branding logo">
+                    <img class="img-fluid" src="{{ asset('/assets/images/pages/login.png') }}" alt="branding logo">
                   </div>
                 </div>
               </div>

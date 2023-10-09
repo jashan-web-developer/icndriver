@@ -2,7 +2,24 @@
 
 @push('head_tags')
 
-<link rel='stylesheet' href="{{ asset('/assetss/css/pages/profile.css') }}" data-name="jashan"/>
+<link rel='stylesheet' href="{{ asset('/assetss/css/pages/profile.css') }}" data-name="driver"/>
+<style type="text/css">
+    .card-body.call-history {
+    unicode-bidi: bidi-override;
+    direction: ltr;
+    overflow: scroll;
+    overflow-x: hidden!important;
+    height: 408px;
+}
+.card-body.driver-locations {
+    unicode-bidi: bidi-override;
+    direction: ltr;
+    overflow: scroll;
+    overflow-x: hidden!important;
+    height: 408px;
+}
+
+</style>
 @endpush
 
 @section('title', 'Profile')
@@ -13,7 +30,6 @@
 
 
         <h4 class="py-3 breadcrumb-wrapper mb-4">
-            Dashboard
         </h4>
 
 
@@ -36,9 +52,9 @@
                                     <h4>{{ $driver->full_name }} </h4>
                                     <ul
                                         class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
-                                        <li class="list-inline-item fw-semibold">
+                                       {{--  <li class="list-inline-item fw-semibold">
                                             <i class='bx bx-pen'></i> Driver
-                                        </li>
+                                        </li> --}}
                                        
                                         <li class="list-inline-item fw-semibold">
                                             <i class='bx bx-calendar-alt'></i> Joined on {{ $driver->signupdate->toFormattedDateString() }}
@@ -244,18 +260,20 @@
                             <table class="table">
                               <thead class="table-dark">
                                 <tr>
-                                  <th>Message</th>
                                   <th>Datetime</th>
+                               
+                                  <th>Message</th>
                                 </tr>
                               </thead>
                               <tbody class="driver-messages-tbody">
                                 
                                 @foreach ($driver->messages as $driverMessage) 
                                     <tr class="{{ $driverMessage->messagestatus ? 'seen-message' : 'table-danger unseen-message' }}">
-                                      <td class="col-9">{{ $driverMessage->message->messagetext }}</td>
                                       <td class="col-3">
                                        {{ $driverMessage->messagedatetime->toFormattedDateString() }}
                                       </td>
+                                      <td class="col-9">{{ $driverMessage->message->messagetext }}</td>
+                                      
                                      
                                     </tr>
                                 @endforeach
