@@ -21,6 +21,8 @@ class Driver extends Authenticatable
 	
 	protected $guard = 'driveruser';
 
+    public $timestamps = false;
+
 
     protected $casts = [
         'signupdate' => 'date',

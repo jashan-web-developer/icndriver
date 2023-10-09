@@ -502,6 +502,21 @@
         function changeDutyStatus() {
             let dutyStatus = event.target.checked ? "on" : "off";
             $('#duty-status-text').text(dutyStatus);
+
+            $.ajax({
+                url: "/change-duty-status",
+                type: "get",
+                data: {
+                    action: dutyStatus,
+                },
+                success: function(response){
+                    console.log(response);
+                },
+
+                error: function(err){
+                    console.log(err);
+                }
+            })
         }
     </script>
 @endpush

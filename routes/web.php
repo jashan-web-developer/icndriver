@@ -49,6 +49,10 @@ Route::get('contactusshow/{id}', [ContactusController::class, 'contactusshow'])-
 Route::get('terms', [ContactusController::class, 'terms'])->name('terms');
 Route::get('privacy', [ContactusController::class, 'policy'])->name('policy');
 
+Route::middleware('auth:driveruser')->group( function(){
+
+    Route::get('/change-duty-status', [AuthController::class, 'toggleDutyStatus']);
+});
 
 
 
