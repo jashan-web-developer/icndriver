@@ -129,4 +129,18 @@ class AuthController extends Controller
 
         return Redirect('login');
     }
+
+    public function toggleDutyStatus(Request $request)
+    {
+        $data = $request->validate(['action' => 'required|in:on,off']);
+        $driver = auth()->user();
+        $driver->dutystatus = $data['action'] == "on" ? 1 : 0;
+        $driver->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => "Status updated",
+        ]);
+
+    }
 }
