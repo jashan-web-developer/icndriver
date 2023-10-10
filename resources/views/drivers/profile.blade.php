@@ -157,8 +157,17 @@
                                     @foreach ($driver->messages as $driverMessage)
                                         <tr
                                             class="{{ $driverMessage->messagestatus ? 'seen-message' : 'table-danger unseen-message' }}">
-                                            <td class="col-3">
-                                                {{ $driverMessage->messagedatetime->toFormattedDateString() }}
+                                            <td class="col-3 p-1">
+                                                <div class="row">
+                                                    <div>{{ $driverMessage->messagedatetime->toFormattedDateString() }}</div>
+                                                    @if ( $driverMessage->messagestatus == 0 )
+                                                    <div>
+                                                        <button type="button" class="btn btn-icon me-2 btn-primary" onclick="markMessageAsSeen(this, {{ $driverMessage->drivermessageid }})">
+                                                        <span class="tf-icons bx bx-check"></span>
+                                                      </button>
+                                                    </div>
+                                                    @endif
+                                                </div>
                                             </td>
                                             <td class="col-9">{{ $driverMessage->message->messagetext }}</td>
 
@@ -504,7 +513,7 @@
             $('#duty-status-text').text(dutyStatus);
 
             $.ajax({
-                url: "/change-duty-status",
+                url: "{{ route('change-duty-status') }}",
                 type: "get",
                 data: {
                     action: dutyStatus,
@@ -516,6 +525,24 @@
                 error: function(err){
                     console.log(err);
                 }
+            })
+        }
+
+        function markMessageAsSeen(buttonElem, driverMessageId)
+        {
+            let url = "{{ route('messages.mark-as-seen', ['driver_message' => 'replaceMeWithId' ]) }}";
+            url = url.replace('replaceMeWithId', driverMessageId);
+            $.ajax({
+                url,
+                type: 'get',
+                success: (response) => {
+                    console.log('response>>', response);
+                    let messageDiv = $(buttonElem).closest('.unseen-message');
+                    messageDiv.removeClass('table-danger unseen-message');
+                    messageDiv.addClass('seen-message');
+                    buttonElem.remove();
+                },
+                error: (err) => console.log(err),
             })
         }
     </script>
