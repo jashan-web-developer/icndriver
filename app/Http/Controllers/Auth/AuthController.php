@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\DriverMessage;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -142,5 +143,22 @@ class AuthController extends Controller
             'message' => "Status updated",
         ]);
 
+    }
+
+    public function markMessageAsSeen(DriverMessage $driverMessage)
+    {
+        $driver = auth()->user();
+
+        if ( $driverMessage->driverid != $driver->driverid ){
+            abort(403);
+        }
+
+        $driverMessage->messagestatus = 1;
+        $driverMessage->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => "Messages marked as seen",
+        ]);
     }
 }

@@ -14,6 +14,8 @@ class DriverMessage extends Model
         'messagestatus' => 'bool',
     ];
 
+    public $timestamps = false;
+
     /**
      * Get the driver that owns the DriverMessage
      *

@@ -51,7 +51,8 @@ Route::get('privacy', [ContactusController::class, 'policy'])->name('policy');
 
 Route::middleware('auth:driveruser')->group( function(){
 
-    Route::get('/change-duty-status', [AuthController::class, 'toggleDutyStatus']);
+    Route::get('/change-duty-status', [AuthController::class, 'toggleDutyStatus'])->name('change-duty-status');
+    Route::get('/messages/seen/{driver_message}', [ AuthController::class, 'markMessageAsSeen'])->name('messages.mark-as-seen');
 });
 
 
