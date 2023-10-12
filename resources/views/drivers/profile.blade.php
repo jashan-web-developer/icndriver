@@ -36,10 +36,10 @@
         <div class="row">
             <div class="col-12">
                 <div class="card mb-4">
-                    <div class="user-profile-header-banner ">
+                    {{-- <div class="user-profile-header-banner ">
                         <img class="w-100" src="{{ asset('/assetss/img/pages/profile-banner.png') }}" alt="Banner image"
                             class="rounded-top">
-                    </div>
+                    </div> --}}
                     <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
                         <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
                             @isset($driver->photo->driversphoto)
@@ -162,16 +162,17 @@
                                             <td class="col-3 p-1">
                                                 <div class="row">
                                                     <div>{{ $driverMessage->messagedatetime->toFormattedDateString() }}</div>
-                                                    @if ( $driverMessage->messagestatus == 0 )
+                                                    
+                                                </div>
+                                            </td>
+                                            <td class="col-9">{{ $driverMessage->message->messagetext }}@if ( $driverMessage->messagestatus == 0 )
                                                     <div>
                                                         <button type="button" class="btn btn-icon me-2 btn-primary" onclick="markMessageAsSeen(this, {{ $driverMessage->drivermessageid }})">
                                                         <span class="tf-icons bx bx-check"></span>
                                                       </button>
                                                     </div>
-                                                    @endif
-                                                </div>
-                                            </td>
-                                            <td class="col-9">{{ $driverMessage->message->messagetext }}</td>
+                                                    @endif</td>
+                                            
 
 
                                         </tr>
