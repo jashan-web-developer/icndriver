@@ -1,5 +1,6 @@
 @extends('layouts.driver')
 
+
 @push('head_tags')
     <link rel='stylesheet' href="{{ asset('/assetss/css/pages/profile.css') }}" data-name="driver" />
     <style type="text/css">
@@ -19,6 +20,8 @@
             max-height: 408px;
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('/assetss/vendor/libs/select2/select2.css') }} " />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 @endpush
 
 @section('title', 'Profile')
@@ -43,15 +46,15 @@
                     <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
                         <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
                             @isset($driver->photo->driversphoto)
-                            <img src="data:image/png;base64,{{ chunk_split(base64_encode($driver->photo->driversphoto)) }}"
-                                alt="user image" class="d-block h-auto ms-0 ms-sm-4 rounded-3 user-profile-img" />
+                                <img src="data:image/png;base64,{{ chunk_split(base64_encode($driver->photo->driversphoto)) }}"
+                                    alt="user image" class="d-block h-auto ms-0 ms-sm-4 rounded-3 user-profile-img" />
                             @endisset
                         </div>
                         <div class="flex-grow-1 mt-3 mt-sm-5">
                             <div
                                 class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-4 flex-md-row flex-column gap-4">
                                 <div class="user-profile-info">
-                                    <h4>{{ $driver->full_name }}  </h4>
+                                    <h4>{{ $driver->full_name }} </h4>
                                     <ul
                                         class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
                                         {{--  <li class="list-inline-item fw-semibold">
@@ -60,7 +63,7 @@
 
                                         <li class="list-inline-item fw-semibold w-100">
                                             <i class='bx bx-calendar-alt'></i> Joined on
-                                            {{isset($driver->signupdate)?$driver->signupdate->toFormattedDateString():'' }}
+                                            {{ isset($driver->signupdate) ? $driver->signupdate->toFormattedDateString() : '' }}
                                         </li>
 
                                         <li class="list-inline-item fw-semibold w-100">
@@ -161,18 +164,21 @@
                                             class="{{ $driverMessage->messagestatus ? 'seen-message' : 'table-danger unseen-message' }}">
                                             <td class="col-3 p-1">
                                                 <div class="row">
-                                                    <div>{{ $driverMessage->messagedatetime->toFormattedDateString() }}</div>
-                                                    
+                                                    <div>{{ $driverMessage->messagedatetime->toFormattedDateString() }}
+                                                    </div>
+
                                                 </div>
                                             </td>
-                                            <td class="col-9">{{ $driverMessage->message->messagetext }}@if ( $driverMessage->messagestatus == 0 )
+                                            <td class="col-9">{{ $driverMessage->message->messagetext }}@if ($driverMessage->messagestatus == 0)
                                                     <div>
-                                                        <button type="button" class="btn btn-icon me-2 btn-primary" onclick="markMessageAsSeen(this, {{ $driverMessage->drivermessageid }})">
-                                                        <span class="tf-icons bx bx-check"></span>
-                                                      </button>
+                                                        <button type="button" class="btn btn-icon me-2 btn-primary"
+                                                            onclick="markMessageAsSeen(this, {{ $driverMessage->drivermessageid }})">
+                                                            <span class="tf-icons bx bx-check"></span>
+                                                        </button>
                                                     </div>
-                                                    @endif</td>
-                                            
+                                                @endif
+                                            </td>
+
 
 
                                         </tr>
@@ -203,8 +209,12 @@
                     <div class="card card-action mb-4">
                         <div class="card-header align-items-center">
                             <h5 class="card-action-title mb-0">Driver Locations</h5>
-                            {{--  <div class="card-action-element btn-pinned">
-                                <div class="dropdown">
+                            <div class="card-action-element btn-pinned">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#addLocationModal">
+                                    Add Location
+                                </button>
+                                {{-- <div class="dropdown">
                                     <button type="button" class="btn dropdown-toggle hide-arrow p-0"
                                         data-bs-toggle="dropdown" aria-expanded="false"><i
                                             class="bx bx-dots-vertical-rounded"></i></button>
@@ -217,11 +227,11 @@
                                         </li>
                                         <li><a class="dropdown-item" href="javascript:void(0);">Report bug</a></li>
                                     </ul>
-                                </div>
-                            </div> --}}
+                                </div> --}}
+                            </div>
                         </div>
                         <div class="card-body driver-locations">
-                            <ul class="list-unstyled mb-0">
+                            <ul class="list-unstyled mb-0" id="locationsList">
                                 @foreach ($driver->locations as $location)
                                     <li class="mb-3">
                                         <div class="d-flex align-items-start">
@@ -326,7 +336,9 @@
                                         </ul>
 
 
-                                        <small class="text-muted text-uppercase">License <a href="javascript:void(0)" class="license-edit-btn" data-driverid="{{$driver->driverid}}"><i class="fa fa-pencil"></i></a></small>
+                                        <small class="text-muted text-uppercase">License <a href="javascript:void(0)"
+                                                class="license-edit-btn" data-driverid="{{ $driver->driverid }}"><i
+                                                    class="fa fa-pencil"></i></a></small>
                                         <div class="license-flash"></div>
                                         <ul class="list-unstyled mb-4 mt-3">
                                             <li class="d-flex align-items-center mb-3">
@@ -422,7 +434,7 @@
                     </div>
                 </div>
                 <!-- Accordion end -->
-               
+
             </div>
 
 
@@ -458,11 +470,15 @@
                                     <span class="timeline-point timeline-point-warning"></span>
                                     <div class="timeline-event">
                                         <div class="timeline-header mb-1">
-                                            <h6 class="mb-0">{{ isset($call->location->town)?$call->location->town:'' }}, {{ isset($call->location->county)?$call->location->county:'' }}
+                                            <h6 class="mb-0">
+                                                {{ isset($call->location->town) ? $call->location->town : '' }},
+                                                {{ isset($call->location->county) ? $call->location->county : '' }}
                                             </h6>
-                                            <small class="text-muted">{{ isset($call->datetime)?$call->datetime->diffForHumans():'' }}</small>
+                                            <small
+                                                class="text-muted">{{ isset($call->datetime) ? $call->datetime->diffForHumans() : '' }}</small>
                                         </div>
-                                        <p class="mb-2">{{ isset($call->datetime)?$call->datetime->toDayDateTimeString():'' }}</p>
+                                        <p class="mb-2">
+                                            {{ isset($call->datetime) ? $call->datetime->toDayDateTimeString() : '' }}</p>
 
                                     </div>
                                 </li>
@@ -502,78 +518,115 @@
 
     </div>
     <!-- / Content -->
+
+
+
+
+    <!-- Add Location Modal -->
+    <div class="modal fade" id="addLocationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel1">Add Locations</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('locations.store') }}" onsubmit="saveLocations()" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <div class="mb-3">
+                                    <label for="select2Basic" class="form-label">Locations</label>
+                                    <select id="selectNewLocation" class="select2 form-select form-select-lg"
+                                        data-allow-clear="true" multiple>
+
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" disabled id="saveLocationsButton">Save
+                            Locations</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--/ Add Location Modal -->
 @endsection
 
 
 @push('body_scripts')
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
 
-            $('.license-edit-btn').on('click',function(e){
+            $('.license-edit-btn').on('click', function(e) {
                 e.preventDefault();
-                var driverid=$(this).data('driverid');
-                var url='{{ route('license.edit','tempid') }}';
-                url=url.replace('tempid',driverid);
+                var driverid = $(this).data('driverid');
+                var url = '{{ route('license.edit', 'tempid') }}';
+                url = url.replace('tempid', driverid);
                 $.ajax({
                     url: url,
                     type: "GET",
-                    datatype:'html',
+                    datatype: 'html',
                     data: {},
-                    success: function(response){
+                    success: function(response) {
                         console.log(response);
                         $('#commonModal .modal-content').html(response);
                         $('#commonModal').modal('show');
                     },
 
-                    error: function(err){
+                    error: function(err) {
                         console.log(err);
                     }
                 });
             });
 
-            $('body').on('change','#licenseimage',function(){
+            $('body').on('change', '#licenseimage', function() {
                 readURL(this);
-              });
+            });
 
-            $('body').on('submit','#license-edit-form', function(e){
-              e.preventDefault();
-              var $this = $(this);
+            $('body').on('submit', '#license-edit-form', function(e) {
+                e.preventDefault();
+                var $this = $(this);
 
-              $.ajax({
-                url: $this.prop('action'),
-                method: $this.prop('method'),
-                dataType: 'json',
-                data: new FormData(this), //4
-                contentType: false,
-                cache: false,
-                processData:false,
-              }).done(function(response){
-                console.log(response);
-                $(".invalid-feedback").html('');
-                $(".invalid-feedback").css('display','none');
-                if(response.status==1)
-                {
-                  $(".closeModal").trigger('click');
-                }
-                if(response.alert_class && response.alert_message)
-                {
-                  var alertdata = '<div class="alert '+response.alert_class+'">'+response.alert_message+'</div>';
-                  $('.license-flash').html(alertdata);
-                }
-                if(response.status==2)
-                {
-                  
-                  $.each( response.errors, function( key, error) { 
-                    $("#license-edit-form #"+key+"").css('display','inline-block');
-                    $("#license-edit-form #"+key+"").html('<strong>'+error[0]+'</strong>');
-                  });
-                }
-              });
-            });//update country
+                $.ajax({
+                    url: $this.prop('action'),
+                    method: $this.prop('method'),
+                    dataType: 'json',
+                    data: new FormData(this), //4
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                }).done(function(response) {
+                    console.log(response);
+                    $(".invalid-feedback").html('');
+                    $(".invalid-feedback").css('display', 'none');
+                    if (response.status == 1) {
+                        $(".closeModal").trigger('click');
+                    }
+                    if (response.alert_class && response.alert_message) {
+                        var alertdata = '<div class="alert ' + response.alert_class + '">' +
+                            response.alert_message + '</div>';
+                        $('.license-flash').html(alertdata);
+                    }
+                    if (response.status == 2) {
+
+                        $.each(response.errors, function(key, error) {
+                            $("#license-edit-form #" + key + "").css('display',
+                                'inline-block');
+                            $("#license-edit-form #" + key + "").html('<strong>' + error[
+                                0] + '</strong>');
+                        });
+                    }
+                });
+            }); //update country
 
             //license-edit-form
 
-        });//ready
+        }); //ready
         function toggleUnreadMessages() {
             $('.driver-messages-tbody .seen-message').toggle()
 
@@ -584,24 +637,24 @@
             $('#duty-status-text').text(dutyStatus);
 
             $.ajax({
-                url: "{{ route('change-duty-status') }}",
+                // url: "{{ route('change-duty-status') }}",
+                url: "/change-duty-status",
                 type: "get",
                 data: {
                     action: dutyStatus,
                 },
-                success: function(response){
+                success: function(response) {
                     console.log(response);
                 },
 
-                error: function(err){
+                error: function(err) {
                     console.log(err);
                 }
             })
         }
 
-        function markMessageAsSeen(buttonElem, driverMessageId)
-        {
-            let url = "{{ route('messages.mark-as-seen', ['driver_message' => 'replaceMeWithId' ]) }}";
+        function markMessageAsSeen(buttonElem, driverMessageId) {
+            let url = "{{ route('messages.mark-as-seen', ['driver_message' => 'replaceMeWithId']) }}";
             url = url.replace('replaceMeWithId', driverMessageId);
             $.ajax({
                 url,
@@ -616,14 +669,127 @@
                 error: (err) => console.log(err),
             })
         }
-        function readURL(input) {   
-            if (input.files && input.files[0]) {   
-              var reader = new FileReader();   
-              reader.onload = function(e) {
-                $('#licenseimage_show').attr('src', e.target.result);
-              }
-              reader.readAsDataURL(input.files[0]);
-            }   
-           }
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#licenseimage_show').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function parseLocationsForSelect2(locations) {
+            let results = locations.data.map((location) => {
+                return {
+                    id: location.locationid,
+                    text: location.town
+                };
+            });
+            console.log('results', results);
+
+            let more = locations.current_page < locations.last_page;
+
+            return {
+                results,
+                pagination: {
+                    more
+                }
+            };
+        }
+
+        function addLocations(locations)
+        {
+            console.log('locations', locations);    
+
+            let listTags = '';
+            
+            for ( location of locations ){
+               let listTag =  `<li class="mb-3">
+                                        <div class="d-flex align-items-start">
+                                            <div class="d-flex align-items-start">
+                                                <div class="me-2">
+                                                    <h6 class="mb-0">${location.town}, ${location.county}</h6>
+                                                </div>
+                                            </div>
+                                            <div class="ms-auto">
+                                                <a target="_blank"
+                                                    href="http://www.google.com/maps/place/${location.latitude},${location.longitude}"
+                                                    class="btn btn-label-primary p-1 btn-sm"><i class="bx bx-map"></i></a>
+                                            </div>
+                                        </div>
+                                    </li>`;
+
+               listTags += listTag;
+            }
+
+            $("#locationsList").prepend(listTags);
+        }
+
+        function saveLocations() {
+            event.preventDefault();
+
+            let locationIds = $("#selectNewLocation").select2('data').map((option) => {
+                return option.id;
+            });
+
+            let data = {
+                locations: locationIds,
+            };
+
+            $.ajax({
+                url: "{{ route('locations.store') }}",
+                type: 'post',
+                data,
+                success: (response) => {
+                    $("#addLocationModal").modal('hide')
+                    console.log("response: ", response.locations);
+                    // addLocations(response.locations);
+                },
+                error: (err) => console.log(err),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            })
+            // console.log('this is event: ', event);
+        }
+
+        $(document).ready(() => {
+
+            $("#selectNewLocation").select2({
+                dropdownParent: $('#addLocationModal'),
+                ajax: {
+                    url: "{{ route('locations.list') }}",
+                    data: function(params) {
+                        var query = {
+                            search: params.term,
+                            page: params.page || 1
+                        }
+
+                        // Query parameters will be ?search=[term]&type=public
+                        return query;
+                    },
+                    processResults: (data) => {
+                        data = parseLocationsForSelect2(data);
+                        return data;
+
+                    },
+                }
+            });
+
+            $('#selectNewLocation').on('change', function() {
+                if ($(this).select2('data').length > 0) {
+                    $('#saveLocationsButton').attr('disabled', false);
+                    return;
+                }
+                $('#saveLocationsButton').attr('disabled', true);
+
+            });
+
+
+        });
     </script>
+
+    <script src="{{ asset('/assetss/vendor/libs/select2/select2.js') }}"></script>
 @endpush

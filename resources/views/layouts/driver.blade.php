@@ -78,7 +78,17 @@
     <!-- Custom notification for demo -->
     <!-- beautify ignore:end -->
 
+    <style>
+        .btn-primary {
+            color: #fff;
+            background-color: #5a8dee !important;
+            border-color: #5a8dee !important;
+            box-shadow: 0 0.125rem 0.25rem rgba(147,158,170,.4);
+        }
+    </style>
     @stack('head_tags')
+
+
 
 </head>
 

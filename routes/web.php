@@ -8,7 +8,7 @@ use App\Http\Controllers\AutoController;
 use App\Http\Controllers\HelthController;
 use App\Http\Controllers\ContactusController;
 use App\Http\Controllers\LicenseController;
-
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,6 +54,8 @@ Route::middleware('auth:driveruser')->group( function(){
 
     Route::get('/change-duty-status', [AuthController::class, 'toggleDutyStatus'])->name('change-duty-status');
     Route::get('/messages/seen/{driver_message}', [ AuthController::class, 'markMessageAsSeen'])->name('messages.mark-as-seen');
+	Route::get('/locations', [ ProfileController::class, 'listLocations'])->name('locations.list');
+	Route::post('/locations', [ ProfileController::class, 'storeLocations'])->name('locations.store');
 
     //license route group starts
     Route::prefix('license')->middleware('auth:driveruser')->group( function(){    
