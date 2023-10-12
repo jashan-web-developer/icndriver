@@ -284,12 +284,12 @@
                                                 <span>{{ $driver->businessurl }}</span>
                                             </li>
                                         </ul>
-                                        <small class="text-muted text-uppercase">About</small>
+                                        <h5>About</h5>
                                         <ul class="list-unstyled mb-4 mt-3">
                                             {{ $driver->description }}
                                         </ul>
 
-                                        <small class="text-muted text-uppercase">Vehicle Details</small>
+                                        <h5>Vehicle Details</h5>
 
                                         <ul class="list-unstyled mb-4 mt-3">
 
@@ -325,8 +325,15 @@
 
                                         </ul>
 
+{{-- <ul class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
+                <li class="">
+                    
+              
+                
+              </ul> --}}
+        {{--       <button type="button" class="">Primary</button> --}}
 
-                                        <small class="text-muted text-uppercase">License <a href="javascript:void(0)" class="license-edit-btn" data-driverid="{{$driver->driverid}}"><i class="fa fa-pencil"></i></a></small>
+                                        <h5>Licence</h5>
                                         <div class="license-flash"></div>
                                         <ul class="list-unstyled mb-4 mt-3">
                                             <li class="d-flex align-items-center mb-3">
@@ -343,6 +350,7 @@
                                                     class="fw-semibold mx-2">Expiry:</span>
                                                 <span>{{ $driver->licenseexpiry->toFormattedDateString() }}</span>
                                             </li>
+                                            <a href="javascript:void(0)" class="btn rounded-pill btn-primary license-edit-btn" data-driverid="{{$driver->driverid}}"><small class="list-inline-item fw-semibold">Edit Licence <i class="bx bx-pen"></i></a></small>
                                         </ul>
 
 
