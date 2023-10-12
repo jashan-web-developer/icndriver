@@ -42,14 +42,16 @@
                     </div>
                     <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
                         <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
+                            @isset($driver->photo->driversphoto)
                             <img src="data:image/png;base64,{{ chunk_split(base64_encode($driver->photo->driversphoto)) }}"
-                                alt="user image" class="d-block h-auto ms-0 ms-sm-4 rounded-3 user-profile-img">
+                                alt="user image" class="d-block h-auto ms-0 ms-sm-4 rounded-3 user-profile-img" />
+                            @endisset
                         </div>
                         <div class="flex-grow-1 mt-3 mt-sm-5">
                             <div
                                 class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-4 flex-md-row flex-column gap-4">
                                 <div class="user-profile-info">
-                                    <h4>{{ $driver->full_name }} </h4>
+                                    <h4>{{ $driver->full_name }}  </h4>
                                     <ul
                                         class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
                                         {{--  <li class="list-inline-item fw-semibold">
@@ -58,7 +60,7 @@
 
                                         <li class="list-inline-item fw-semibold w-100">
                                             <i class='bx bx-calendar-alt'></i> Joined on
-                                            {{ $driver->signupdate->toFormattedDateString() }}
+                                            {{isset($driver->signupdate)?$driver->signupdate->toFormattedDateString():'' }}
                                         </li>
 
                                         <li class="list-inline-item fw-semibold w-100">
@@ -323,7 +325,8 @@
                                         </ul>
 
 
-                                        <small class="text-muted text-uppercase">License</small>
+                                        <small class="text-muted text-uppercase">License <a href="javascript:void(0)" class="license-edit-btn" data-driverid="{{$driver->driverid}}"><i class="fa fa-pencil"></i></a></small>
+                                        <div class="license-flash"></div>
                                         <ul class="list-unstyled mb-4 mt-3">
                                             <li class="d-flex align-items-center mb-3">
 
@@ -454,11 +457,11 @@
                                     <span class="timeline-point timeline-point-warning"></span>
                                     <div class="timeline-event">
                                         <div class="timeline-header mb-1">
-                                            <h6 class="mb-0">{{ $call->location->town }}, {{ $call->location->county }}
+                                            <h6 class="mb-0">{{ isset($call->location->town)?$call->location->town:'' }}, {{ isset($call->location->county)?$call->location->county:'' }}
                                             </h6>
-                                            <small class="text-muted">{{ $call->datetime->diffForHumans() }}</small>
+                                            <small class="text-muted">{{ isset($call->datetime)?$call->datetime->diffForHumans():'' }}</small>
                                         </div>
-                                        <p class="mb-2">{{ $call->datetime->toDayDateTimeString() }}</p>
+                                        <p class="mb-2">{{ isset($call->datetime)?$call->datetime->toDayDateTimeString():'' }}</p>
 
                                     </div>
                                 </li>
@@ -503,6 +506,73 @@
 
 @push('body_scripts')
     <script>
+        $(document).ready(function(){
+
+            $('.license-edit-btn').on('click',function(e){
+                e.preventDefault();
+                var driverid=$(this).data('driverid');
+                var url='{{ route('license.edit','tempid') }}';
+                url=url.replace('tempid',driverid);
+                $.ajax({
+                    url: url,
+                    type: "GET",
+                    datatype:'html',
+                    data: {},
+                    success: function(response){
+                        console.log(response);
+                        $('#commonModal .modal-content').html(response);
+                        $('#commonModal').modal('show');
+                    },
+
+                    error: function(err){
+                        console.log(err);
+                    }
+                });
+            });
+
+            $('body').on('change','#licenseimage',function(){
+                readURL(this);
+              });
+
+            $('body').on('submit','#license-edit-form', function(e){
+              e.preventDefault();
+              var $this = $(this);
+
+              $.ajax({
+                url: $this.prop('action'),
+                method: $this.prop('method'),
+                dataType: 'json',
+                data: new FormData(this), //4
+                contentType: false,
+                cache: false,
+                processData:false,
+              }).done(function(response){
+                console.log(response);
+                $(".invalid-feedback").html('');
+                $(".invalid-feedback").css('display','none');
+                if(response.status==1)
+                {
+                  $(".closeModal").trigger('click');
+                }
+                if(response.alert_class && response.alert_message)
+                {
+                  var alertdata = '<div class="alert '+response.alert_class+'">'+response.alert_message+'</div>';
+                  $('.license-flash').html(alertdata);
+                }
+                if(response.status==2)
+                {
+                  
+                  $.each( response.errors, function( key, error) { 
+                    $("#license-edit-form #"+key+"").css('display','inline-block');
+                    $("#license-edit-form #"+key+"").html('<strong>'+error[0]+'</strong>');
+                  });
+                }
+              });
+            });//update country
+
+            //license-edit-form
+
+        });//ready
         function toggleUnreadMessages() {
             $('.driver-messages-tbody .seen-message').toggle()
 
@@ -545,5 +615,14 @@
                 error: (err) => console.log(err),
             })
         }
+        function readURL(input) {   
+            if (input.files && input.files[0]) {   
+              var reader = new FileReader();   
+              reader.onload = function(e) {
+                $('#licenseimage_show').attr('src', e.target.result);
+              }
+              reader.readAsDataURL(input.files[0]);
+            }   
+           }
     </script>
 @endpush

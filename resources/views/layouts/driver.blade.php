@@ -661,6 +661,17 @@
     <a href="https://1.envato.market/frest_admin" target="_blank" class="btn btn-danger btn-buy-now">Buy Now</a>
   </div> --}}
 
+  <!--common modal starts-->
+
+  <div class="modal fade" id="commonModal" tabindex="-1" aria-labelledby="commonModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+            
+        </div>
+      </div>
+    </div>
+  <!--common modal ends-->
+
 
 
 
