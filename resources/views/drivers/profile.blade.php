@@ -22,6 +22,7 @@
     </style>
     <link rel="stylesheet" href="{{ asset('/assetss/vendor/libs/select2/select2.css') }} " />
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="{{ asset('/assetss/vendor/libs/sweetalert2/sweetalert2.css') }}">
 @endpush
 
 @section('title', 'Profile')
@@ -208,7 +209,7 @@
                 <div class="col-lg-12 ">
                     <div class="card card-action mb-4">
                         <div class="card-header align-items-center">
-                            <h5 class="card-action-title mb-0">Driver Locations</h5>
+                            <h5 class="card-action-title mb-0">{{ count($driver->locations) > 0 ? "Driver Locations" : "No Locations Yet" }}</h5>
                             <div class="card-action-element btn-pinned">
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#addLocationModal">
@@ -231,23 +232,47 @@
                             </div>
                         </div>
                         <div class="card-body driver-locations">
+                            <div class="form-check form-check-inline my-3 w-50">
+                                @if ( count($driver->locations ) > 0)
+                                <div class="row">
+                                    <div class="col-6">
+
+                                        <input class="form-check-input" type="checkbox" id="toggle-all-driver-locations" value="option1" />
+                                        <label class="form-check-label" for="toggle-all-driver-locations">Select All</label>
+                                    </div>
+                                    <div class="col-6" id="delete-locations-container" style="display: none">
+                                        <button type="button" class="btn btn-danger mb-3" onclick="confirmDeleteLocations()">Delete</button>
+                                    </div>
+                                </div>
+                                @endif
+                              </div>
+                            
                             <ul class="list-unstyled mb-0" id="locationsList">
-                                @foreach ($driver->locations as $location)
-                                    <li class="mb-3">
-                                        <div class="d-flex align-items-start">
+
+                                <form action="/jsn">
+                                    @foreach ($driver->locations as $location)
+                                        <li class="mb-3">
                                             <div class="d-flex align-items-start">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">{{ $location->town }}, {{ $location->county }}</h6>
+                                                <div class="d-flex align-items-start">
+                                                    <div class="me-2"><input name="selectedLocations[]"
+                                                            class="form-check-input" type="checkbox"
+                                                            value="{{ $location->locationid }}"
+                                                            onchange="onLocationCheckboxChange()"></div>
+                                                    <div class="me-2">
+                                                        <h6 class="mb-0">{{ $location->town }}, {{ $location->county }}
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                                <div class="ms-auto">
+                                                    <a target="_blank"
+                                                        href="http://www.google.com/maps/place/{{ $location->latitude }},{{ $location->longitude }}"
+                                                        class="btn btn-label-primary p-1 btn-sm"><i
+                                                            class="bx bx-map"></i></a>
                                                 </div>
                                             </div>
-                                            <div class="ms-auto">
-                                                <a target="_blank"
-                                                    href="http://www.google.com/maps/place/{{ $location->latitude }},{{ $location->longitude }}"
-                                                    class="btn btn-label-primary p-1 btn-sm"><i class="bx bx-map"></i></a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                @endforeach
+                                        </li>
+                                    @endforeach
+                                </form>
 
                                 {{-- <li class="text-center">
                                     <a href="javascript:;">View all teams</a>
@@ -269,7 +294,8 @@
                             </button>
                         </h2>
 
-                        <div id="personal-info" class="accordion-collapse collapse" data-bs-parent="#user-details-parent">
+                        <div id="personal-info" class="accordion-collapse collapse"
+                            data-bs-parent="#user-details-parent">
                             <div class="accordion-body">
                                 <!-- About User -->
                                 <div class="card mb-4 shadow-none">
@@ -335,13 +361,13 @@
 
                                         </ul>
 
-{{-- <ul class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
+                                        {{-- <ul class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
                 <li class="">
                     
               
                 
               </ul> --}}
-        {{--       <button type="button" class="">Primary</button> --}}
+                                        {{--       <button type="button" class="">Primary</button> --}}
 
                                         <h5>Licence</h5>
                                         <div class="license-flash"></div>
@@ -360,7 +386,11 @@
                                                     class="fw-semibold mx-2">Expiry:</span>
                                                 <span>{{ $driver->licenseexpiry->toFormattedDateString() }}</span>
                                             </li>
-                                            <a href="javascript:void(0)" class="btn rounded-pill btn-primary license-edit-btn" data-driverid="{{$driver->driverid}}"><small class="list-inline-item fw-semibold">Edit Licence <i class="bx bx-pen"></i></a></small>
+                                            <a href="javascript:void(0)"
+                                                class="btn rounded-pill btn-primary license-edit-btn"
+                                                data-driverid="{{ $driver->driverid }}"><small
+                                                    class="list-inline-item fw-semibold">Edit Licence <i
+                                                        class="bx bx-pen"></i></a></small>
                                         </ul>
 
 
@@ -705,7 +735,7 @@
             };
         }
 
-        
+
 
         function saveLocations() {
             event.preventDefault();
@@ -733,6 +763,62 @@
             })
             // console.log('this is event: ', event);
         }
+
+
+        function onLocationCheckboxChange() {
+            let checkedLocations = $("input[name='selectedLocations[]']:checked");
+
+            if (checkedLocations.length) {
+                $("#delete-locations-container").show();
+                return;
+            }
+
+            $("#delete-locations-container").hide();
+            return;
+        }
+        
+
+        function confirmDeleteLocations() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteDriverLocations();
+                    
+                }
+            })
+        }
+
+        function deleteDriverLocations()
+        {
+            let checkedLocations = $("input[name='selectedLocations[]']:checked")
+            let locationIds = [];
+            checkedLocations.each( function(){
+                locationIds.push($(this).val());
+            }); 
+
+            $.ajax({
+                url: "{{ route('locations.delete') }}",
+                type: 'post',
+                data: { locations: locationIds},
+                success: (response) => {
+                    console.log(response);
+                    Swal.fire({icon: 'success', title: "Locations Deleted"}).then( () => window.location.reload());
+                    // window.location.reload();
+                },
+                error: (err) => console.log(err),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            })
+        }
+        
 
         $(document).ready(() => {
 
@@ -766,9 +852,19 @@
 
             });
 
+            $("#toggle-all-driver-locations").on('change', function(){
+
+                let isChecked = $(this).is(":checked");
+                $("input[name='selectedLocations[]']").prop('checked', isChecked);
+                onLocationCheckboxChange();
+
+            });
+
+
 
         });
     </script>
 
     <script src="{{ asset('/assetss/vendor/libs/select2/select2.js') }}"></script>
+    <script src="{{ asset('/assetss/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
 @endpush
