@@ -705,33 +705,7 @@
             };
         }
 
-        function addLocations(locations)
-        {
-            console.log('locations', locations);    
-
-            let listTags = '';
-            
-            for ( location of locations ){
-               let listTag =  `<li class="mb-3">
-                                        <div class="d-flex align-items-start">
-                                            <div class="d-flex align-items-start">
-                                                <div class="me-2">
-                                                    <h6 class="mb-0">${location.town}, ${location.county}</h6>
-                                                </div>
-                                            </div>
-                                            <div class="ms-auto">
-                                                <a target="_blank"
-                                                    href="http://www.google.com/maps/place/${location.latitude},${location.longitude}"
-                                                    class="btn btn-label-primary p-1 btn-sm"><i class="bx bx-map"></i></a>
-                                            </div>
-                                        </div>
-                                    </li>`;
-
-               listTags += listTag;
-            }
-
-            $("#locationsList").prepend(listTags);
-        }
+        
 
         function saveLocations() {
             event.preventDefault();
@@ -750,8 +724,7 @@
                 data,
                 success: (response) => {
                     $("#addLocationModal").modal('hide')
-                    console.log("response: ", response.locations);
-                    // addLocations(response.locations);
+                    window.location.reload();
                 },
                 error: (err) => console.log(err),
                 headers: {
