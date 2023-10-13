@@ -56,6 +56,7 @@ Route::middleware('auth:driveruser')->group( function(){
     Route::get('/messages/seen/{driver_message}', [ AuthController::class, 'markMessageAsSeen'])->name('messages.mark-as-seen');
 	Route::get('/locations', [ ProfileController::class, 'listLocations'])->name('locations.list');
 	Route::post('/locations', [ ProfileController::class, 'storeLocations'])->name('locations.store');
+	Route::post('/locations/delete', [ ProfileController::class, 'deleteLocations'])->name('locations.delete');
 
     //license route group starts
     Route::prefix('license')->middleware('auth:driveruser')->group( function(){    

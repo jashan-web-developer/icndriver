@@ -34,8 +34,27 @@ class ProfileController extends Controller
 
         return response()->json([
             'status' => true,
-            'message' => 'locations added',
-            'locations' =>  Location::find($request->locations),
+            'message' => 'Successfull',
         ]);
     }
+
+
+    public function deleteLocations(Request $request)
+    {
+        $data = $request->validate([
+            'locations' => 'array|min:1',
+            'locations.*' => 'exists:locations_master,locationid',
+        ]);
+
+        $driver = auth()->user();
+        $driver->locations()->detach($data['locations']);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfull',
+        ]);
+
+    }
+
+ 
 }

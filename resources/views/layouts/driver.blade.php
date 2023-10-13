@@ -12,7 +12,7 @@
 </style>
 
 <!-- beautify ignore:start -->
-<html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed " dir="ltr" data-theme="theme-bordered" data-assets-path="../../assetss/" data-template="vertical-menu-template-bordered">
+<html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed " dir="ltr" data-theme="theme-bordered" data-assets-path="{{ asset('/assetss/') }}" data-template="vertical-menu-template-bordered">
 
   
 
@@ -60,10 +60,10 @@
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-    <script src="{{ asset('/assetss/vendor/js/template-customizer.js') }}"></script>
+  {{--   <script src="{{ asset('/assetss/vendor/js/template-customizer.js') }}"></script> --}}
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="{{ asset('/assetss/js/config.js') }}"></script>
-    
+     <script src="{{ asset('/assetss/js/config.js') }}"></script>
+     
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async="async" src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
     <script>
@@ -78,14 +78,7 @@
     <!-- Custom notification for demo -->
     <!-- beautify ignore:end -->
 
-    <style>
-        .btn-primary {
-            color: #fff;
-            background-color: #5a8dee !important;
-            border-color: #5a8dee !important;
-            box-shadow: 0 0.125rem 0.25rem rgba(147,158,170,.4);
-        }
-    </style>
+    
     @stack('head_tags')
 
 
