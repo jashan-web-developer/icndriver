@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\DriverMessage;
+use App\Models\Location;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -97,8 +98,10 @@ class AuthController extends Controller
         $driver->calls = $driver->calls->sortByDesc('datetime');
         $driver->payments = $driver->payments->sortByDesc('paymentdatetime');
         $driver->messages = $driver->messages->sortByDesc('messages');
+
+        $locations = Location::all();
         
-        return view('drivers.profile', compact('driver'));
+        return view('drivers.profile', compact('driver', 'locations'));
 
 
         return redirect("login")->withSuccess('Opps! You do not have access');
