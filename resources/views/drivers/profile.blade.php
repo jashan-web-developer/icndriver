@@ -55,7 +55,7 @@
                             <div
                                 class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-4 flex-md-row flex-column gap-4">
                                 <div class="user-profile-info">
-                                    <h4>{{ $driver->full_name }} </h4>
+                                    <h4>{{ $driver->full_name }} <a href="{{route('edit_history')}}"><i class="fa fa-clock" title="Edit History"></i></a> </h4>
                                     <ul
                                         class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
                                         {{--  <li class="list-inline-item fw-semibold">
@@ -595,8 +595,14 @@
 
 
 @push('body_scripts')
+<script src="{{ asset('/assetss/vendor/libs/select2/select2.js') }}"></script>
+<script src="{{ asset('/assetss/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
     <script>
         $(document).ready(function() {
+
+            
+
+            
 
             $('.license-edit-btn').on('click', function(e) {
                 e.preventDefault();
@@ -641,7 +647,20 @@
                     $(".invalid-feedback").html('');
                     $(".invalid-feedback").css('display', 'none');
                     if (response.status == 1) {
-                        $(".closeModal").trigger('click');
+                        //$(".closeModal").trigger('click');
+                        Swal.fire({
+                            html:'Application has been received, we will review it and your profile will be updated once it is approved internally.<br><br>You can track the pending application to get current status by <a href="{{route('edit_history')}}">clicking here</a>',
+                            icon: 'success',
+                            confirmButtonText: 'Close',
+                        }).then((result) => {
+                          
+                          if (result.isConfirmed) {
+                            //Swal.fire('Saved!', '', 'success')
+                            $(".closeModal").trigger('click');
+                          } else if (result.isDenied) {
+                            $(".closeModal").trigger('click');
+                          }
+                        })
                     }
                     if (response.alert_class && response.alert_message) {
                         var alertdata = '<div class="alert ' + response.alert_class + '">' +
@@ -865,6 +884,5 @@
         });
     </script>
 
-    <script src="{{ asset('/assetss/vendor/libs/select2/select2.js') }}"></script>
-    <script src="{{ asset('/assetss/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
+    
 @endpush

@@ -74,7 +74,7 @@ class LicenseController extends Controller
         {
             $already_in_queue_to_approve=1;
         }
-        $license_query=License::where('driverid','1')->first();
+        $license_query=License::where('driverid',$driverid)->first();
         $data['license_query']=$license_query; 
         $data['already_in_queue_to_approve']=$already_in_queue_to_approve; 
         
@@ -108,7 +108,8 @@ class LicenseController extends Controller
 
             $driver = auth()->guard('driveruser')->user();
             $driverid=$driver->driverid;
-            $licensephoto = base64_encode(
+            $licensephoto = 
+            base64_encode(
                 file_get_contents(
                     $request->file('licensephoto')->path()
                 )
@@ -130,7 +131,7 @@ class LicenseController extends Controller
                 'status' => 1,
                 'message' => 'Successfully submitted for Approval',
                 'alert_class' => 'alert-success',
-                'alert_message' => 'Updated Successfully',
+                'alert_message' => 'Successfully submitted for Approval',
                 'exception'=>$exception
             );
         }else{

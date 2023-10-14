@@ -9,6 +9,7 @@ use App\Http\Controllers\HelthController;
 use App\Http\Controllers\ContactusController;
 use App\Http\Controllers\LicenseController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\EditHistoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,13 +60,21 @@ Route::middleware('auth:driveruser')->group( function(){
 	Route::post('/locations/delete', [ ProfileController::class, 'deleteLocations'])->name('locations.delete');
 
     //license route group starts
-    Route::prefix('license')->middleware('auth:driveruser')->group( function(){    
+    Route::prefix('license')->group( function(){    
 	    Route::get('/edit', [ LicenseController::class, 'edit'])
 	    ->name('license.edit');
 	    Route::post('/update', [ LicenseController::class, 'update'])
 	    ->name('license.update');
 	});
 	//license route group ends
+	//edit history route group starts
+    Route::prefix('edit-history')->group( function(){    
+	    Route::get('/', [ EditHistoryController::class, 'index'])
+	    ->name('edit_history');
+	    Route::post('/listing', [ EditHistoryController::class, 'getListing'])
+	    ->name('edit_history.listing');
+	});
+	//edit history route group ends
 });
 
 
